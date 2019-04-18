@@ -23,7 +23,10 @@ const app = express();
 // enabling cros-origin
 app.use(cors());
 
-// setup  request body json parsing
+// bodyparser
+app.use(express.urlencoded({ extended: false }));
+
+// setup request body json parsing
 app.use(express.json());
 
 // setup morgan
