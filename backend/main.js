@@ -3,8 +3,19 @@
 // loading modules
 const express = require("express");
 const morgan = require("morgan");
-const mongoose = require("mongoose");
+const userRoute = require("./routes/userRoute");
 var cors = require("cors");
+
+// connecting to mongo Atlas
+
+const MongoClient = require("mongodb").MongoClient;
+const uri =
+  "mongodb+srv://felixghislain:bonjour@latenewsdb-pwqtc.mongodb.net/test?retryWrites=true";
+const client = new MongoClient(uri, { useNewUrlParser: true });
+client
+  .connect()
+  .then(res => console.log("connected ..."))
+  .catch(err => console.log(err));
 
 // creating express app
 const app = express();
@@ -22,9 +33,11 @@ app.use(morgan("dev"));
 app.set("port", process.env.PORT || 5000);
 
 // setting up friendly greeting
-app.get("/", (rea, res) =>
+app.get("/", (req, res) =>
   res.json({ message: "welcome to the latest news api" })
 );
+// using the user route
+app.use("/user", userRoute);
 
 // start listening
 const server = app.listen(app.get("port"), () => {
